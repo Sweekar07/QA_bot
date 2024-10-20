@@ -4,11 +4,14 @@ FROM python:3.9-slim
 # Set the working directory
 WORKDIR /app
 
-# Copy the local code to the container
-COPY . .
+# Copy only requirements.txt to leverage Docker's cache
+COPY requirements.txt .
 
 # Install dependencies
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
+COPY . .
 
 # Expose the Streamlit port
 EXPOSE 8501
